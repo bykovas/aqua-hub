@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.WebDashboard", "Aqu
 		AquaHub.WebDashboard\index.html = AquaHub.WebDashboard\index.html
 	EndProjectSection
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.ATO", "AquaHub.ATO\AquaHub.ATO.pyproj", "{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
