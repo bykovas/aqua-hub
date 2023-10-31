@@ -21,12 +21,13 @@ led_on_time = 0
 is_led_on = False
 
 def beep(buzzer_pin, duration):
+    start_time = time.perf_counter()
     GPIO.output(buzzer_pin, GPIO.HIGH)
-    time.sleep(duration)
+    while time.perf_counter() - start_time < duration:
+        pass
     GPIO.output(buzzer_pin, GPIO.LOW)
 
-try:
-    beep(PIN_BUZZER_OUT, 0.5)       
+try:        
     while True:
         button_state = GPIO.input(PIN_BUTTON_IN)
         button_pressed = button_state == 0
