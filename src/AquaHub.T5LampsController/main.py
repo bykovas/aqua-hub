@@ -16,9 +16,9 @@ def main() -> int:
         if Scheduler.is_demo_mode():
             print('Running in demo mode')
         else:
-            dac.set_dac_out_voltage(current_values[0] / 10, CHANNEL_0)
-            dac.set_dac_out_voltage(current_values[1] / 10, CHANNEL_1)
-            print(f'Ch0: {current_values[0] / 10}, Ch1: {current_values[1] / 10}, demo: {Scheduler.is_demo_mode()}')
+            dac.set_dac_out_voltage(current_values[0], CHANNEL_0)
+            dac.set_dac_out_voltage(current_values[1], CHANNEL_1)
+            print(f'Ch0: {current_values[0]}, Ch1: {current_values[1]}, demo: {Scheduler.is_demo_mode()}')
 
         time.sleep(1)
 

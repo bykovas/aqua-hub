@@ -7,8 +7,8 @@ class Scheduler:
     @staticmethod
     def get_current_values():
         result = [0] * 2
-        result[0] = random.randint(1, 49)
-        result[1] = random.randint(50, 100)
+        result[0] = random.randint(20, 90)
+        result[1] = random.randint(20, 90)
 
         return result
 

@@ -5,6 +5,11 @@ VisualStudioVersion = 17.8.34219.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsController", "AquaHub.T5LampsController\AquaHub.T5LampsController.pyproj", "{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.WebDashboard", "AquaHub.WebDashboard", "{53157CD6-BA7F-451B-BE34-CC665674C5F5}"
+	ProjectSection(SolutionItems) = preProject
+		AquaHub.WebDashboard\index.html = AquaHub.WebDashboard\index.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

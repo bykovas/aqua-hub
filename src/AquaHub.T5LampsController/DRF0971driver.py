@@ -20,9 +20,10 @@ class DRF0971Driver:
         self._data_transmission = 0
         self._i2c = smbus.SMBus(1)
         self._set_dac_out_range(OUTPUT_RANGE_10V)
-        self._set_dac_out_voltage(MAX_VOLTAGE, CHANNEL_ALL)
+        self.set_dac_out_voltage(MAX_VOLTAGE, CHANNEL_ALL)
 
-    def set_dac_out_voltage(self, voltage, channel):
+    def set_dac_out_voltage(self, percentage, channel):
+        voltage = percentage * MAX_VOLTAGE / 100;
         data_transmission = int((voltage / MAX_VOLTAGE) * 4095) << 4
         self._send_data(data_transmission, channel)
 
