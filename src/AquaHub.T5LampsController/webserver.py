@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from scheduler import Scheduler
+from schedule import Schedule
 from DRF0971driver import *
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ def start_api_server():
 
     @app.route('/set_values', methods =['POST'])
     def set_values():
-        Scheduler.set_demo_mode()
+        Schedule.set_demo_mode()
         values = request.json
         ch1 = int(values['Ch1'])
         ch2 = int(values['Ch2'])
@@ -21,7 +21,7 @@ def start_api_server():
 
     @app.route('/get_values', methods=['GET'])
     def get_values():
-        values = Scheduler.get_current_values()
+        values = Schedule.get_current_values()
         return jsonify({"values": values}), 200
 
     app.run(host='0.0.0.0', port=5000)   

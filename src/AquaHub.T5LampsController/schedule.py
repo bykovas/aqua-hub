@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import random
 
-class Scheduler:
+class Schedule:
     _demoModeExpireTime = None
 
     @staticmethod
@@ -14,10 +14,10 @@ class Scheduler:
 
     @staticmethod
     def set_demo_mode():
-        Scheduler._demoModeExpireTime = datetime.now() + timedelta(seconds=30)
+        Schedule._demoModeExpireTime = datetime.now() + timedelta(seconds=30)
 
     @staticmethod
     def is_demo_mode():
-        if Scheduler._demoModeExpireTime is None:
+        if Schedule._demoModeExpireTime is None:
             return False
-        return Scheduler._demoModeExpireTime > datetime.now()
+        return Schedule._demoModeExpireTime > datetime.now()

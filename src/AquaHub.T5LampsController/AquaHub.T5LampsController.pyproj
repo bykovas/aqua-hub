@@ -23,7 +23,7 @@
   <ItemGroup>
     <Compile Include="DRF0971driver.py" />
     <Compile Include="main.py" />
-    <Compile Include="scheduler.py" />
+    <Compile Include="schedule.py" />
     <Compile Include="webserver.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

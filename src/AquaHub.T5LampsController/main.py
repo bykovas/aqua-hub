@@ -2,7 +2,7 @@ import threading
 import sys
 import time
 
-from scheduler import Scheduler
+from schedule import Schedule
 from DRF0971driver import *
 import webserver
 
@@ -12,13 +12,13 @@ def main() -> int:
     t.start()
 
     while True:
-        current_values = Scheduler.get_current_values()
-        if Scheduler.is_demo_mode():
+        current_values = Schedule.get_current_values()
+        if Schedule.is_demo_mode():
             print('Running in demo mode')
         else:
             dac.set_dac_out_voltage(current_values[0], CHANNEL_0)
             dac.set_dac_out_voltage(current_values[1], CHANNEL_1)
-            print(f'Ch0: {current_values[0]}, Ch1: {current_values[1]}, demo: {Scheduler.is_demo_mode()}')
+            print(f'Ch0: {current_values[0]}, Ch1: {current_values[1]}, demo: {Schedule.is_demo_mode()}')
 
         time.sleep(1)
 
