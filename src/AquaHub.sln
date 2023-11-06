@@ -12,7 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.WebDashboard", "Aqu
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.ATO", "AquaHub.ATO\AquaHub.ATO.pyproj", "{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaHub.NConsole", "AquaHub.NConsole\AquaHub.NConsole.csproj", "{033DEFAC-7C57-408A-B88F-D44A0EEF3814}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaHub.NConsole", "AquaHub.NConsole\AquaHub.NConsole.csproj", "{033DEFAC-7C57-408A-B88F-D44A0EEF3814}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.Arduino", "AquaHub.Arduino", "{B65D7A0C-39F1-4E14-84F0-15E684C9C57D}"
+	ProjectSection(SolutionItems) = preProject
+		AquaHub.Arduino\nanod.c = AquaHub.Arduino\nanod.c
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
