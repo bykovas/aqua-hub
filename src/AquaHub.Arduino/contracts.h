@@ -10,32 +10,40 @@ struct SensorData {
     float temperature_air;
     float humidity;
     float light;
+    float air_fan;
     String error;
 };
 
 // Function to serialize sensor data to JSON
 void serializeSensorDataToJson(const SensorData& data, JsonDocument& doc) {
-    doc["temperature_water"] = data.temperature_water;
-    doc["temperature_air"] = data.temperature_air;
-    doc["humidity"] = data.humidity;
-    doc["light"] = data.light;
-    // Include the error message if it's not empty
-    if (data.error != "") {
-        doc["error"] = data.error;
+    JsonArray sensors = doc.createNestedArray("sensors");
+
+    JsonObject sensorTempWater = sensors.createNestedObject();
+    sensorTempWater["name"] = "water_temp";
+    sensorTempWater["value"] = data.temperature_water;
+
+    JsonObject sensorTempAir = sensors.createNestedObject();
+    sensorTempAir["name"] = "air_temp";
+    sensorTempAir["value"] = data.temperature_air;
+
+    JsonObject sensorHumidity = sensors.createNestedObject();
+    sensorHumidity["name"] = "humidity";
+    sensorHumidity["value"] = data.humidity;
+
+    JsonObject sensorLight = sensors.createNestedObject();
+    sensorLight["name"] = "lux";
+    sensorLight["value"] = data.light;
+
+    JsonObject sensorAirFan = sensors.createNestedObject();
+    sensorAirFan["name"] = "air_fan";
+    sensorAirFan["value"] = data.air_fan;
+
+    if (data.error.length() > 0) {
+        doc["errors"] = data.error;
+    }
+    else {
+        doc["errors"] = "";
     }
 }
 
-// Function to deserialize sensor data from JSON
-void deserializeJsonToSensorData(JsonDocument& doc, SensorData& data) {
-    // Use | operator to provide default values in case of missing fields
-    data.temperature_water = doc["temperature_water"] | 0.0;
-    data.temperature_air = doc["temperature_air"] | 0.0;
-    data.humidity = doc["humidity"] | 0.0;
-    data.light = doc["light"] | 0.0;
-    // Check if the "error" field exists and if so, read it into the error string
-    if (doc.containsKey("error")) {
-        data.error = doc["error"].as<String>();
-    }
-}
-
-#endif // DATA_CONTRACT_H
+#endif  // DATA_CONTRACT_H

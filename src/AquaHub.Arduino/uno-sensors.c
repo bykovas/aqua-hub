@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include <BH1750.h>
 #include <SoftwareSerial.h>
-#include "Contracts.h"
+#include "contracts.h"
 
 #define ONE_WIRE_BUS 2
 #define DHTPIN 3
@@ -15,7 +15,8 @@
 #define RED_LED_PIN 7
 #define GREEN_LED_PIN 8
 #define SERIAL_BAUD_RATE 9600
-#define SENSOR_READ_INTERVAL 1000
+#define SENSOR_READ_INTERVAL 10000
+#define AIR_FAN_PIN 9
 
 SoftwareSerial mySerial(RX_PIN, TX_PIN);
 DHT dht(DHTPIN, DHTTYPE);
@@ -28,6 +29,7 @@ SensorData sensorData;
 void setup() {
     pinMode(RED_LED_PIN, OUTPUT);
     pinMode(GREEN_LED_PIN, OUTPUT);
+    pinMode(AIR_FAN_PIN, OUTPUT);
     Serial.begin(SERIAL_BAUD_RATE);
     mySerial.begin(SERIAL_BAUD_RATE);
     dht.begin();
@@ -54,6 +56,42 @@ void loop() {
         lastSensorReadMillis = currentMillis;
         readSensors();
         sendSensorData();
+    }
+
+    if (Serial.available()) {
+        StaticJsonDocument<256> doc;
+        DeserializationError error = deserializeJson(doc, Serial);
+
+        if (!error) {
+            JsonArray drivers = doc["drivers"];
+            for (JsonObject driver : drivers) {
+                const char* name = driver["name"];
+                float value = driver["value"];
+
+                if (strcmp(name, "air_fan") == 0) {
+                    setAirFanSpeed(value);
+                }
+            }
+        }
+    }
+}
+
+void setAirFanSpeed(float percentage) {
+    int pwmValue = map(percentage, 0, 100, 0, 255);
+    analogWrite(AIR_FAN_PIN, pwmValue);
+    sensorData.air_fan = percentage;
+}
+
+void handleIncomingData(JsonDocument& doc) {
+    JsonArray drivers = doc["drivers"];
+    for (JsonObject driver : drivers) {
+        String name = driver["name"].as<String>();
+        Serial.println(name);
+        if (name == "air_fan") {
+            int pwmValue = driver["value"].as<float>() / 100.0 * 255;
+            analogWrite(AIR_FAN_PIN, pwmValue);
+            sensorData.air_fan = driver["value"].as<float>();
+        }
     }
 }
 
