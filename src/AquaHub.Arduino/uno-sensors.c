@@ -4,6 +4,7 @@
 #include <DallasTemperature.h>
 #include <Wire.h>
 #include <BH1750.h>
+#include "DFRobot_GP8403.h"
 #include <SoftwareSerial.h>
 #include "contracts.h"
 
@@ -17,12 +18,14 @@
 #define SERIAL_BAUD_RATE 9600
 #define SENSOR_READ_INTERVAL 10000
 #define AIR_FAN_PIN 9
+#define DAC_ADDRESS 0x5f
 
 SoftwareSerial mySerial(RX_PIN, TX_PIN);
 DHT dht(DHTPIN, DHTTYPE);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 BH1750 lightMeter;
+DFRobot_GP8403 dac(&Wire, DAC_ADDRESS);
 
 SensorData sensorData;
 
@@ -36,6 +39,10 @@ void setup() {
     sensors.begin();
     Wire.begin();
     lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE);
+    while (dac.begin() != 0) {
+        delay(500);
+    }
+    dac.setDACOutRange(dac.eOutputRange10V);
     Serial.println(F("Device initialized and ready to collect data."));
 }
 
@@ -71,6 +78,12 @@ void loop() {
                 if (strcmp(name, "air_fan") == 0) {
                     setAirFanSpeed(value);
                 }
+                else if (strcmp(name, "light_blue") == 0) {
+                    setLightBlue(value);
+                }
+                else if (strcmp(name, "light_coral") == 0) {
+                    setLightCoral(value);
+                }
             }
         }
     }
@@ -80,6 +93,18 @@ void setAirFanSpeed(float percentage) {
     int pwmValue = map(percentage, 0, 100, 0, 255);
     analogWrite(AIR_FAN_PIN, pwmValue);
     sensorData.air_fan = percentage;
+}
+
+void setLightBlue(float percentage) {
+    int value = map(percentage, 0, 100, 0, 5000);
+    dac.setDACOutVoltage(value, 0);
+    sensorData.light_blue = percentage;
+}
+
+void setLightCoral(float percentage) {
+    int value = map(percentage, 0, 100, 0, 5000);
+    dac.setDACOutVoltage(value, 1);
+    sensorData.light_coral = percentage;
 }
 
 void handleIncomingData(JsonDocument& doc) {

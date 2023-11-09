@@ -11,6 +11,8 @@ struct SensorData {
     float humidity;
     float light;
     float air_fan;
+    float light_blue;
+    float light_coral;
     String error;
 };
 
@@ -37,6 +39,14 @@ void serializeSensorDataToJson(const SensorData& data, JsonDocument& doc) {
     JsonObject sensorAirFan = sensors.createNestedObject();
     sensorAirFan["name"] = "air_fan";
     sensorAirFan["value"] = data.air_fan;
+
+    JsonObject sensorLightCoral = sensors.createNestedObject();
+    sensorLightCoral["name"] = "light_coral";
+    sensorLightCoral["value"] = data.light_coral;
+
+    JsonObject sensorLightBlue = sensors.createNestedObject();
+    sensorLightBlue["name"] = "light_blue";
+    sensorLightBlue["value"] = data.light_blue;
 
     if (data.error.length() > 0) {
         doc["errors"] = data.error;
