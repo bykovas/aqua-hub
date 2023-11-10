@@ -65,9 +65,9 @@ void loop() {
         sendSensorData();
     }
 
-    if (Serial.available()) {
+    if (mySerial.available()) {
         StaticJsonDocument<256> doc;
-        DeserializationError error = deserializeJson(doc, Serial);
+        DeserializationError error = deserializeJson(doc, mySerial);
 
         if (!error) {
             JsonArray drivers = doc["drivers"];
@@ -105,19 +105,6 @@ void setLightCoral(float percentage) {
     int value = map(percentage, 0, 100, 0, 5000);
     dac.setDACOutVoltage(value, 1);
     sensorData.light_coral = percentage;
-}
-
-void handleIncomingData(JsonDocument& doc) {
-    JsonArray drivers = doc["drivers"];
-    for (JsonObject driver : drivers) {
-        String name = driver["name"].as<String>();
-        Serial.println(name);
-        if (name == "air_fan") {
-            int pwmValue = driver["value"].as<float>() / 100.0 * 255;
-            analogWrite(AIR_FAN_PIN, pwmValue);
-            sensorData.air_fan = driver["value"].as<float>();
-        }
-    }
 }
 
 void readSensors() {
