@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.Arduino", "AquaHub.Arduino", "{B65D7A0C-39F1-4E14-84F0-15E684C9C57D}"
 	ProjectSection(SolutionItems) = preProject
 		AquaHub.Arduino\contracts.h = AquaHub.Arduino\contracts.h
+		AquaHub.Arduino\esp8266.c = AquaHub.Arduino\esp8266.c
 		AquaHub.Arduino\nano-drivers.c = AquaHub.Arduino\nano-drivers.c
 		AquaHub.Arduino\nanod.c = AquaHub.Arduino\nanod.c
 		AquaHub.Arduino\uno-sensors.c = AquaHub.Arduino\uno-sensors.c

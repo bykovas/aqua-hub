@@ -43,7 +43,7 @@ void setup() {
         delay(500);
     }
     dac.setDACOutRange(dac.eOutputRange10V);
-    Serial.println(F("Device initialized and ready to collect data."));
+    //Serial.println(F("Device initialized and ready to collect data."));
 }
 
 void loop() {

@@ -4,6 +4,9 @@
     {
         static void Main(string[] args)
         {
+            var test = new Test();
+            test.Foo();
+
             Console.WriteLine("Hello, World!");
             while(true)
             {
