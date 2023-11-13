@@ -116,13 +116,20 @@ void readSensors() {
 }
 
 void sendSensorData() {
-    StaticJsonDocument<256> jsonDoc;
-    serializeSensorDataToJson(sensorData, jsonDoc);
+    String influxData = "sensorData ";
+    influxData += "temperature_water=" + String(sensorData.temperature_water) + ",";
+    influxData += "temperature_air=" + String(sensorData.temperature_air) + ",";
+    influxData += "humidity=" + String(sensorData.humidity) + ",";
+    influxData += "light=" + String(sensorData.light) + ",";
+    influxData += "air_fan=" + String(sensorData.air_fan) + ",";
+    influxData += "light_blue=" + String(sensorData.light_blue) + ",";
+    influxData += "light_coral=" + String(sensorData.light_coral);
+    influxData += " " + String(millis());
+
     if (Serial) {
-        serializeJson(jsonDoc, Serial);
-        Serial.println();
+        Serial.println(influxData);
     }
-    serializeJson(jsonDoc, mySerial);
+    mySerial.println(influxData);
 }
 
 void blinkRed(unsigned long currentMillis) {
