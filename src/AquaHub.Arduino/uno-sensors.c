@@ -66,26 +66,25 @@ void loop() {
     }
 
     if (mySerial.available()) {
-        StaticJsonDocument<256> doc;
-        DeserializationError error = deserializeJson(doc, mySerial);
+        String csvString = mySerial.readStringUntil('\n');  // Read the CSV string
 
-        if (!error) {
-            JsonArray drivers = doc["drivers"];
-            for (JsonObject driver : drivers) {
-                const char* name = driver["name"];
-                float value = driver["value"];
+        // Split the CSV string into parts
+        int firstCommaIndex = csvString.indexOf(',');
+        int secondCommaIndex = csvString.indexOf(',', firstCommaIndex + 1);
 
-                if (strcmp(name, "air_fan") == 0) {
-                    setAirFanSpeed(value);
-                }
-                else if (strcmp(name, "light_blue") == 0) {
-                    setLightBlue(value);
-                }
-                else if (strcmp(name, "light_coral") == 0) {
-                    setLightCoral(value);
-                }
-            }
-        }
+        // Extract values from the CSV string
+        String lightBlueStr = csvString.substring(0, firstCommaIndex);
+        String lightCoralStr = csvString.substring(firstCommaIndex + 1, secondCommaIndex);
+        String airFanStr = csvString.substring(secondCommaIndex + 1);
+
+        // Convert the string values to float and set the values
+        float lightBlueValue = lightBlueStr.toFloat();
+        float lightCoralValue = lightCoralStr.toFloat();
+        float airFanValue = airFanStr.toFloat();
+
+        setLightBlue(lightBlueValue);
+        setLightCoral(lightCoralValue);
+        setAirFanSpeed(airFanValue);
     }
 }
 

@@ -1,24 +1,19 @@
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
 #include <PubSubClient.h>
 #include <ArduinoOTA.h>
 
-// Specify your Wi-Fi SSID and password
 const char* ssid = "";
 const char* password = "";
 
-// MQTT server address
 const char* mqtt_server = "192.168.1.11";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-ESP8266WebServer server(80);
+unsigned long lastMsgTime = 0;
+const long interval = 5000;
 
 String serialData = "";
-
-unsigned long lastMsgTime = 0;
-const long interval = 5000;  // Message sending interval in milliseconds
 
 void publishMessage(const char* topic, const String& message) {
     if (!client.connected()) {
@@ -34,23 +29,14 @@ void publishMessage(const char* topic, const String& message) {
     Serial.println(message);
 }
 
-void handleData() {
-    publishMessage("/logs", "Handling data request");
-    if (server.method() == HTTP_GET) {
-        server.send(200, "text/plain", serialData);
-        publishMessage("/logs", "GET Request processed");
+void callback(char* topic, byte* payload, unsigned int length) {
+    Serial.print("Message arrived [");
+    Serial.print(topic);
+    Serial.print("] ");
+    for (int i = 0; i < length; i++) {
+        Serial.print((char)payload[i]);
     }
-    else if (server.method() == HTTP_POST) {
-        if (!server.hasArg("plain")) {
-            server.send(200, "text/plain", "Body not received");
-            publishMessage("/logs", "POST Request failed: No body received");
-            return;
-        }
-        String message = server.arg("plain");
-        publishMessage("/logs", "POST received: " + message);
-        server.send(200, "application/json", "{\"result\":\"received\"}");
-        publishMessage("/logs", "POST Request processed");
-    }
+    Serial.println();
 }
 
 void setup_wifi() {
@@ -64,7 +50,29 @@ void setup_wifi() {
     publishMessage("/logs", "WiFi connected, IP: " + WiFi.localIP().toString());
 }
 
-void setup_ota() {
+void reconnect() {
+    // Loop until we're reconnected
+    while (!client.connected()) {
+        publishMessage("/logs", "Attempting to reconnect MQTT");
+        // Attempt to connect
+        if (client.connect("ESP8266Client")) {
+            publishMessage("/logs", "MQTT Reconnected");
+            // Subscribe to the topic
+            client.subscribe("/esp8266/cmd");
+        }
+        else {
+            // Wait 5 seconds before retrying
+            delay(5000);
+        }
+    }
+}
+
+void setup() {
+    Serial.begin(9600);
+    setup_wifi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+
     publishMessage("/logs", "Setting up OTA");
     ArduinoOTA.onStart([]() {
         publishMessage("/logs", "OTA Start");
@@ -80,29 +88,10 @@ void setup_ota() {
         });
     ArduinoOTA.begin();
     publishMessage("/logs", "OTA Setup complete");
-}
 
-void reconnect() {
-    publishMessage("/logs", "Attempting to reconnect MQTT");
-    while (!client.connected()) {
-        if (client.connect("ESP8266Client")) {
-            publishMessage("/logs", "MQTT Reconnected");
-        }
-        else {
-            delay(5000);
-            publishMessage("/logs", "MQTT Reconnect failed, retrying...");
-        }
-    }
-}
+    ArduinoOTA.begin();
 
-void setup() {
-    Serial.begin(9600);
-    setup_wifi();
-    client.setServer(mqtt_server, 1883);
-    setup_ota();
-    server.on("/data", handleData);
-    server.begin();
-    publishMessage("/logs", "Server started");
+    reconnect();
 }
 
 void loop() {
@@ -115,6 +104,7 @@ void loop() {
     while (Serial.available() > 0) {
         serialData = Serial.readStringUntil('\n');
     }
+
 
     unsigned long now = millis();
     if (now - lastMsgTime > interval) {
