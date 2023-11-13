@@ -68,6 +68,11 @@ void loop() {
     if (mySerial.available()) {
         String csvString = mySerial.readStringUntil('\n');  // Read the CSV string
 
+        if (Serial) {
+            Serial.print("Received from sw serial: ");
+            Serial.println(csvString);
+        }
+
         // Split the CSV string into parts
         int firstCommaIndex = csvString.indexOf(',');
         int secondCommaIndex = csvString.indexOf(',', firstCommaIndex + 1);
