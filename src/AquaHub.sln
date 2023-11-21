@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.Arduino", "AquaHub.
 		AquaHub.Arduino\uno-sensors.c = AquaHub.Arduino\uno-sensors.c
 	EndProjectSection
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsFanController", "AquaHub.T5LampsFanController\AquaHub.T5LampsFanController.pyproj", "{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsTempSensor", "AquaHub.T5LampsTempSensor\AquaHub.T5LampsTempSensor.pyproj", "{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

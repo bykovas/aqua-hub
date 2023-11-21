@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using MQTTnet.Client;
+using MQTTnet;
 using Newtonsoft.Json;
 
 namespace AquaHub.NConsole
@@ -13,18 +15,35 @@ namespace AquaHub.NConsole
 
     public class Test
     {
-        public void Foo()
+        public async void Foo()
         {
-var result = new List<KeyValuePair<string, string>>
-{
-    new("001", "First Item"),
-    new("002", "Second Item"),
-    new("003", "Third Item"),
-    new("004", "Fourth Item")
-};
-            var json = JsonConvert.SerializeObject(result.ToList());
+            var mqttFactory = new MqttFactory();
+            using var mqttClient = mqttFactory.CreateMqttClient();
 
+            var options = new MqttClientOptionsBuilder()
+                .WithTcpServer("192.168.1.11")
+                .Build();
 
+            await mqttClient.ConnectAsync(options, CancellationToken.None);
+
+            while (true)
+            {
+                double t = (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+                double t5blueValue = (Math.Sin(2 * Math.PI * t / 20) + 1) * 50;
+                double t5coralValue = 100 - t5blueValue;
+
+                await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                    .WithTopic("ahub/light/t5blue/in")
+                    .WithPayload(((int)t5blueValue).ToString())
+                    .Build());
+
+                await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                    .WithTopic("ahub/light/t5coral/in")
+                    .WithPayload(((int)t5coralValue).ToString())
+                    .Build());
+
+                Thread.Sleep(1000);
+            }
         }
     }
 }
