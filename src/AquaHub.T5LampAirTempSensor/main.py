@@ -27,8 +27,8 @@ try:
 
         if valid_readings > 0:
             # Calculate average temperature and humidity
-            avg_temperature = temp_sum / valid_readings
-            avg_humidity = hum_sum / valid_readings
+            avg_temperature = round(temp_sum / valid_readings, 1)
+            avg_humidity = round(hum_sum / valid_readings, 1)
 
             # Publish average temperature and humidity data
             client.publish("ahub/light/air_temp/out", str(avg_temperature))
