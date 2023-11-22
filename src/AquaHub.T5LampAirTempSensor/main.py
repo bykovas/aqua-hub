@@ -13,16 +13,30 @@ client.loop_start()
 
 try:
     while True:
-        # Read data from the DHT22 sensor
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio_pin)
-        if humidity is not None and temperature is not None:
-            # Publish temperature and humidity data
-            client.publish("ahub/light/air_temp/out", str(temperature))
-            client.publish("ahub/light/air_humidity/out", str(humidity))
+        temp_sum = 0.0
+        hum_sum = 0.0
+        valid_readings = 0
+
+        for _ in range(10):  # Measure 10 times
+            humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio_pin)
+            if humidity is not None and temperature is not None:
+                temp_sum += temperature
+                hum_sum += humidity
+                valid_readings += 1
+            time.sleep(0.5)  # Delay between individual readings
+
+        if valid_readings > 0:
+            # Calculate average temperature and humidity
+            avg_temperature = temp_sum / valid_readings
+            avg_humidity = hum_sum / valid_readings
+
+            # Publish average temperature and humidity data
+            client.publish("ahub/light/air_temp/out", str(avg_temperature))
+            client.publish("ahub/light/air_humidity/out", str(avg_humidity))
         else:
             print("Failed to retrieve data from the sensor")
 
-        time.sleep(5)  # Delay between readings
+        time.sleep(5)  # Delay between sets of readings
 
 except KeyboardInterrupt:
     pass
