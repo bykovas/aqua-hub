@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34219.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsController", "AquaHub.T5LampsController\AquaHub.T5LampsController.pyproj", "{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.WebDashboard", "AquaHub.WebDashboard", "{53157CD6-BA7F-451B-BE34-CC665674C5F5}"
 	ProjectSection(SolutionItems) = preProject
 		AquaHub.WebDashboard\index.html = AquaHub.WebDashboard\index.html
@@ -23,11 +21,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.Arduino", "AquaHub.
 		AquaHub.Arduino\uno-sensors.c = AquaHub.Arduino\uno-sensors.c
 	EndProjectSection
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsFanController", "AquaHub.T5LampsFanController\AquaHub.T5LampsFanController.pyproj", "{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampLuxSensor", "AquaHub.T5LampLuxSensor\AquaHub.T5LampLuxSensor.pyproj", "{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsTempSensor", "AquaHub.T5LampsTempSensor\AquaHub.T5LampsTempSensor.pyproj", "{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampFanController", "AquaHub.T5LampFanController\AquaHub.T5LampFanController.pyproj", "{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampsLuxSensor", "AquaHub.T5LampsLuxSensor\AquaHub.T5LampsLuxSensor.pyproj", "{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampAirTempSensor", "AquaHub.T5LampAirTempSensor\AquaHub.T5LampAirTempSensor.pyproj", "{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampBulbController", "AquaHub.T5LampBulbController\AquaHub.T5LampBulbController.pyproj", "{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AquaHub.T5LampWaterTempSensor", "AquaHub.T5LampWaterTempSensor\AquaHub.T5LampWaterTempSensor.pyproj", "{AAF6CBE8-B477-437D-833C-1015D389D764}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,20 +37,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32DEAC9F-A578-4E52-ACF8-5F545AAEAF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033DEFAC-7C57-408A-B88F-D44A0EEF3814}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A00EBC00-48F0-4DE6-8B58-ABAF1F256F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1AFFB1CE-0A4C-4487-B355-2EB6BFCB20B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DBE2F9-15F2-48C7-99B4-1CA98DD90E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF6CBE8-B477-437D-833C-1015D389D764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF6CBE8-B477-437D-833C-1015D389D764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

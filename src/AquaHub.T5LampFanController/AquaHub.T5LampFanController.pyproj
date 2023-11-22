@@ -2,15 +2,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>e3b9f68f-d9f4-4439-abd5-7966b9be42fa</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
+    <ProjectGuid>a00ebc00-48f0-4de6-8b58-abaf1f256f49</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
     <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>AquaHub.T5LampsController</Name>
-    <RootNamespace>AquaHub.T5LampsController</RootNamespace>
+    <Name>AquaHub.T5LampFanController</Name>
+    <RootNamespace>AquaHub.T5LampsFanController</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DRF0971driver.py" />
     <Compile Include="main.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

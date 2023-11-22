@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 using MQTTnet.Client;
 using MQTTnet;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Net.Http;
+using System.Web;
 
 namespace AquaHub.NConsole
 {
-
-
+    
     public class Test
     {
         public async void Foo()
         {
+
             var mqttFactory = new MqttFactory();
             using var mqttClient = mqttFactory.CreateMqttClient();
 
