@@ -48,7 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".dockerfiles", ".dockerfile
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{85E13EC6-068B-4B1C-A7F3-00B51793F8B6}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\docker-build.yml = .github\workflows\docker-build.yml
+		..\.github\workflows\docker-build.yml = ..\.github\workflows\docker-build.yml
 	EndProjectSection
 EndProject
 Global
