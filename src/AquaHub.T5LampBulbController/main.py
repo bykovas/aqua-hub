@@ -1,67 +1,77 @@
 import sys
 import time
+import json
 import paho.mqtt.client as mqtt
 import logging
-from DRF0971driver import *
+from DRF0971driver import DRF0971Driver
 
-# Configure logging with an identifier for the specific application
+# Load configuration from a JSON file
+with open('/apps/aquahub.t5lapm.appsettings.json', 'r') as config_file:
+    config = json.load(config_file)
+
+# Setting up logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - AquaHub.T5LampController - %(levelname)s - %(message)s')
 
-# Function to log messages
-def log_message(message):
-    full_message = f"AquaHub.T5LampController - {message}"
-    try:
-        client.publish("ahub/logs/error", full_message)
-    except Exception:
-        logging.error(full_message)
+class T5LampController:
+    def __init__(self):
+        self.dac = DRF0971Driver()
+        self.client = mqtt.Client(userdata={'t5blue': 0, 't5coral': 0})
+        self.client.on_message = self.on_message
 
-# Callback function for processing received MQTT messages
-def on_message(client, userdata, message):
-    try:
-        value = int(message.payload.decode())
-        if message.topic == "ahub/light/t5blue/in":
-            dac.set_dac_out_voltage(value, CHANNEL_0)
-            userdata['t5blue'] = value
-        elif message.topic == "ahub/light/t5coral/in":
-            dac.set_dac_out_voltage(value, CHANNEL_1)
-            userdata['t5coral'] = value
-    except ValueError:
-        log_message(f"Error: Invalid value received in topic {message.topic}")
+    def log_message(self, message):
+        """ Logs a message to the MQTT server """
+        full_message = f"AquaHub.T5LampController - {message}"
+        try:
+            self.client.publish(config['LOG_TOPIC'], full_message)
+        except Exception:
+            logging.error(full_message)
 
-# Main function
-def main() -> int:
-    client_userdata = {'t5blue': 0, 't5coral': 0}
-    client = mqtt.Client(userdata=client_userdata)
-    client.on_message = on_message
+    def on_message(self, client, userdata, message):
+        """ Processes incoming MQTT messages """
+        try:
+            value = int(message.payload.decode())
+            if message.topic == config['T5BLUE_TOPIC_IN']:
+                self.dac.set_dac_out_voltage(value, CHANNEL_0)
+                userdata['t5blue'] = value
+            elif message.topic == config['T5CORAL_TOPIC_IN']:
+                self.dac.set_dac_out_voltage(value, CHANNEL_1)
+                userdata['t5coral'] = value
+        except ValueError:
+            self.log_message(f"Error: Invalid value received in topic {message.topic}")
 
-    try:
-        client.connect("192.168.1.11")
-    except Exception as e:
-        log_message(f"An error occurred: {e}")
-        sys.exit(1)
+    def run(self):
+        """ Main loop of the controller """
+        try:
+            self.client.connect(config['MQTT_SERVER'])
+            self.client.subscribe(config['T5BLUE_TOPIC_IN'])
+            self.client.subscribe(config['T5CORAL_TOPIC_IN'])
+            self.client.loop_start()
 
-    client.subscribe("ahub/light/t5blue/in")
-    client.subscribe("ahub/light/t5coral/in")
-    client.loop_start()
+            self.dac.set_dac_out_voltage(0, CHANNEL_0)
+            self.dac.set_dac_out_voltage(0, CHANNEL_1)
 
-    dac.set_dac_out_voltage(0, CHANNEL_0)
-    dac.set_dac_out_voltage(0, CHANNEL_1)
+            update_interval = config.get('T5LAMP_UPDATE_INTERVAL', 5) # Default to 5 seconds if not set
+            while True:
+                self.publish_status()
+                time.sleep(update_interval)
+        except KeyboardInterrupt:
+            pass
+        except Exception as e:
+            self.log_message(f"An error occurred: {e}")
+        finally:
+            self.client.loop_stop()
+            self.client.disconnect()
 
-    try:
-        while True:
-            client.publish("ahub/light/t5blue/out", str(client_userdata['t5blue']))
-            client.publish("ahub/light/t5coral/out", str(client_userdata['t5coral']))
-            time.sleep(5)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        client.loop_stop()
-        client.disconnect()
+    def publish_status(self):
+        """ Publishes the current status to the MQTT server """
+        userdata = self.client._userdata
+        self.client.publish(config['T5BLUE_TOPIC_OUT'], str(userdata['t5blue']))
+        self.client.publish(config['T5CORAL_TOPIC_OUT'], str(userdata['t5coral']))
 
-# Entry point
+# Entry point of the program
 if __name__ == '__main__':
     try:
-        dac = DRF0971Driver()
-        sys.exit(main())
+        controller = T5LampController()
+        sys.exit(controller.run())
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logging.error(f"AquaHub.T5LampController - An error occurred: {e}")

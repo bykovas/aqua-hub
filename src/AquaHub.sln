@@ -36,6 +36,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{D6531543
 		..\docs\t5.md = ..\docs\t5.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".configs", ".configs", "{4C8A0031-A60E-4DCA-A9FC-E8D592D09163}"
+	ProjectSection(SolutionItems) = preProject
+		aquahub.t5lapm.appsettings.json = aquahub.t5lapm.appsettings.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
