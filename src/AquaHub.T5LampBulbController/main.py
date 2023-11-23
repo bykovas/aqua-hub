@@ -3,14 +3,21 @@ import time
 import json
 import paho.mqtt.client as mqtt
 import logging
-from DRF0971driver import DRF0971Driver
+from logging.handlers import TimedRotatingFileHandler
+from DRF0971driver import DRF0971Driver, CHANNEL_0, CHANNEL_1
+import os
 
 # Load configuration from a JSON file
-with open('/apps/aquahub.t5lapm.appsettings.json', 'r') as config_file:
+with open('/apps/aquahub.t5lamp.appsettings.json', 'r') as config_file:
     config = json.load(config_file)
 
-# Setting up logging
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - AquaHub.T5LampController - %(levelname)s - %(message)s')
+# Setting up logging to a file with rotation every day
+log_directory = '/apps/AquaHub.T5LampBulbController/logs'
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
+log_file_path = '/apps/AquaHub.T5LampBulbController/logs/t5lamp.log'
+logging.basicConfig(handlers=[TimedRotatingFileHandler(log_file_path, when="midnight", interval=1, backupCount=5)],
+                    level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class T5LampController:
     def __init__(self):
@@ -19,12 +26,8 @@ class T5LampController:
         self.client.on_message = self.on_message
 
     def log_message(self, message):
-        """ Logs a message to the MQTT server """
-        full_message = f"AquaHub.T5LampController - {message}"
-        try:
-            self.client.publish(config['LOG_TOPIC'], full_message)
-        except Exception:
-            logging.error(full_message)
+        """ Logs a message to the file """
+        logging.error(f"AquaHub.T5LampController - {message}")
 
     def on_message(self, client, userdata, message):
         """ Processes incoming MQTT messages """
