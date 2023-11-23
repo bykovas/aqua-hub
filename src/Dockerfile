@@ -11,11 +11,11 @@ COPY . .
 WORKDIR "/src/AquaHub.NConsole"
 
 # Build the project for ARM
-RUN dotnet build "AquaHub.NConsole.csproj" -c Release -o /app/build -r linux-arm
+RUN dotnet build "AquaHub.NConsole.csproj" -c Release -o /app/build
 
 # Publish the project for ARM
 FROM build AS publish
-RUN dotnet publish "AquaHub.NConsole.csproj" -c Release -o /app/publish -r linux-arm
+RUN dotnet publish "AquaHub.NConsole.csproj" -c Release -o /app/publish
 
 # Generate the final image using the official .NET runtime image for ARM
 FROM mcr.microsoft.com/dotnet/runtime:7.0 AS final
