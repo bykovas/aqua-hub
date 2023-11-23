@@ -2,15 +2,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>e3b9f68f-d9f4-4439-abd5-7966b9be42fa</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
+    <ProjectGuid>1affb1ce-0a4c-4487-b355-2eb6bfcb20b9</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
     <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>AquaHub.T5LampsController</Name>
-    <RootNamespace>AquaHub.T5LampsController</RootNamespace>
+    <Name>AquaHub.T5LampAirTempSensor</Name>
+    <RootNamespace>AquaHub.T5LampsTempSensor</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,10 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DRF0971driver.py" />
     <Compile Include="main.py" />
-    <Compile Include="scheduler.py" />
-    <Compile Include="webserver.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
