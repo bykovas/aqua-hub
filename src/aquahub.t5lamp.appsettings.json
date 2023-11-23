@@ -9,5 +9,7 @@
   "MQTT_TEMP_TOPIC": "ahub/light/air_temp/out",
   "MQTT_HUMIDITY_TOPIC": "ahub/light/air_humidity/out",
   "MQTT_LUX_TOPIC": "ahub/light/lux/out",
-  "DS18B20_TOPIC": "ahub/light/water_temp/out"
+  "DS18B20_TOPIC": "ahub/light/water_temp/out",
+  "FAN_IN_TOPIC": "ahub/light/fan/in",
+  "FAN_OUT_TOPIC": "ahub/light/fan/out"
 }
