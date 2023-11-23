@@ -2,13 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore any dependencies (via NuGet)
+# Copy csproj and restore as a distinct layer
 COPY ["AquaHub.NConsole/AquaHub.NConsole.csproj", "AquaHub.NConsole/"]
 RUN dotnet restore "AquaHub.NConsole/AquaHub.NConsole.csproj"
 
-# Copy the project files and build the release
+# Copy the rest of the source code
 COPY . .
 WORKDIR "/src/AquaHub.NConsole"
+
+# Build the project
 RUN dotnet build "AquaHub.NConsole.csproj" -c Release -o /app/build
 
 # Publish the project
