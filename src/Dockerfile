@@ -1,5 +1,5 @@
 # Use the official .NET SDK image for ARM architecture to build the application
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-arm32v7 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore as a distinct layer
@@ -18,7 +18,7 @@ FROM build AS publish
 RUN dotnet publish "AquaHub.NConsole.csproj" -c Release -o /app/publish -r linux-arm
 
 # Generate the final image using the official .NET runtime image for ARM
-FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim-arm32v7 AS final
+FROM mcr.microsoft.com/dotnet/runtime:7.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
