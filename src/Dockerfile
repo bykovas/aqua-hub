@@ -4,7 +4,7 @@ WORKDIR /src
 
 # Copy csproj and restore as a distinct layer
 COPY ["AquaHub.NConsole/AquaHub.NConsole.csproj", "AquaHub.NConsole/"]
-RUN dotnet restore "AquaHub.NConsole/AquaHub.NConsole.csproj"
+RUN dotnet restore "AquaHub.NConsole/AquaHub.NConsole.csproj" --source "https://api.nuget.org/v3/index.json"
 
 # Copy the rest of the source code
 COPY . .
