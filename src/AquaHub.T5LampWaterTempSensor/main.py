@@ -15,6 +15,13 @@ def on_connect(client, userdata, flags, rc):
 
 def on_disconnect(client, userdata, rc):
     logging.warning("Disconnected from MQTT Broker")
+    # Try reconnect
+    if rc != 0:  # rc = 0 means disconnect was planned
+        logging.info("Attempting to reconnect to MQTT Broker")
+        try:
+            client.reconnect()
+        except Exception as e:
+            logging.error(f"Reconnection to MQTT Broker failed: {e}")
 
 def on_publish(client, userdata, mid):
     logging.info(f"Message {mid} published")
