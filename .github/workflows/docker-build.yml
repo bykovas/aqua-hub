@@ -27,5 +27,5 @@ jobs:
         context: ./src
         file: ./src/Dockerfile
         push: true
-        tags:  omenas/aquahub-nconsole-rpi:latest
+        tags:  omenas/aquahub-nconsole:latest
         platforms: linux/arm/v7
