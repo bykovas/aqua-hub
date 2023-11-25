@@ -43,6 +43,7 @@ client.on_publish = on_publish
 
 # Connect to MQTT Broker
 client.connect(config['MQTT_SERVER'])
+client.loop_start()
 
 # Initialize sensor
 sensor = W1ThermSensor()
