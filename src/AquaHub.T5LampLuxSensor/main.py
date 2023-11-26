@@ -25,6 +25,10 @@ BH1750_CONTINUOUS_HIGH_RES_MODE = 0x10
 
 # MQTT client setup
 client = mqtt.Client()
+mqtt_user = config.get('MQTT_USER', '')
+mqtt_password = config.get('MQTT_PASSWORD', '')
+if mqtt_user and mqtt_password:
+    client.username_pw_set(mqtt_user, mqtt_password)
 client.connect(config['MQTT_SERVER'])  # Address of the MQTT broker
 client.loop_start()
 

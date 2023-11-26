@@ -1,10 +1,12 @@
 {
   "MQTT_SERVER": "192.168.1.11",
+  "MQTT_USER": "mqttu",
+  "MQTT_PASSWORD": "mqttp",
   "T5BLUE_TOPIC_IN": "ahub/light/t5blue/in",
   "T5CORAL_TOPIC_IN": "ahub/light/t5coral/in",
   "T5BLUE_TOPIC_OUT": "ahub/light/t5blue/out",
   "T5CORAL_TOPIC_OUT": "ahub/light/t5coral/out",
-  "T5LAMP_UPDATE_INTERVAL": 5,
+  "T5LAMP_UPDATE_INTERVAL": 300,
   "DHT_GPIO_PIN": 4,
   "MQTT_TEMP_TOPIC": "ahub/light/air_temp/out",
   "MQTT_HUMIDITY_TOPIC": "ahub/light/air_humidity/out",

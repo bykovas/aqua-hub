@@ -45,6 +45,10 @@ class T5LampController:
     def run(self):
         """ Main loop of the controller """
         try:
+            mqtt_user = config.get('MQTT_USER', '')
+            mqtt_password = config.get('MQTT_PASSWORD', '')
+            if mqtt_user and mqtt_password:
+                self.client.username_pw_set(mqtt_user, mqtt_password)            
             self.client.connect(config['MQTT_SERVER'])
             self.client.subscribe(config['T5BLUE_TOPIC_IN'])
             self.client.subscribe(config['T5CORAL_TOPIC_IN'])

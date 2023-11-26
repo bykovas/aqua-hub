@@ -43,6 +43,7 @@ namespace AquaHub.NConsole
             var mqttClient = factory.CreateMqttClient();
 
             var options = new MqttClientOptionsBuilder()
+                .WithCredentials("mqttu", "mqttp")
                 .WithTcpServer("192.168.1.11")
                 .Build();
 
