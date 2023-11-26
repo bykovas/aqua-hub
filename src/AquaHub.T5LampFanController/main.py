@@ -29,6 +29,7 @@ def on_message(client, userdata, message):
     try:
         current_power = float(message.payload.decode())
         pwm.ChangeDutyCycle(current_power)  # Change duty cycle based on received message
+        client.publish(config['FAN_OUT_TOPIC'], str(current_power))        
     except Exception as e:
         logging.error(f"Error handling message: {e}")
 
