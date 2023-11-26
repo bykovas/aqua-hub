@@ -21,6 +21,10 @@ gpio_pin = config['DHT_GPIO_PIN']
 
 # MQTT client setup
 client = mqtt.Client()
+mqtt_user = config.get('MQTT_USER', '')
+mqtt_password = config.get('MQTT_PASSWORD', '')
+if mqtt_user and mqtt_password:
+    client.username_pw_set(mqtt_user, mqtt_password)
 client.connect(config['MQTT_SERVER'])
 client.loop_start()
 

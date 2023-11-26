@@ -37,6 +37,10 @@ logging.basicConfig(handlers=[TimedRotatingFileHandler(log_file_name, when="midn
 
 # Initialize MQTT Client
 client = mqtt.Client("DS18B20_Publisher")
+mqtt_user = config.get('MQTT_USER', '')
+mqtt_password = config.get('MQTT_PASSWORD', '')
+if mqtt_user and mqtt_password:
+    client.username_pw_set(mqtt_user, mqtt_password)
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 client.on_publish = on_publish

@@ -35,7 +35,10 @@ def on_message(client, userdata, message):
 # MQTT client setup
 client = mqtt.Client()
 client.on_message = on_message
-
+mqtt_user = config.get('MQTT_USER', '')
+mqtt_password = config.get('MQTT_PASSWORD', '')
+if mqtt_user and mqtt_password:
+    client.username_pw_set(mqtt_user, mqtt_password)
 client.connect(config['MQTT_SERVER'])  # Connect to MQTT broker
 client.subscribe(config['FAN_IN_TOPIC'])  # Subscribe to topic
 client.loop_start()
