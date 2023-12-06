@@ -1,0 +1,67 @@
+esphome:
+  name: ahub-filter-roller
+  friendly_name: "ahub-filter-roller"
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "pBF6hsDmXdI/0W/0yY+HE8GQMx/PxxXpGIEERwS/Xro="
+
+ota:
+  password: "a9bd8e6a0e47feb411927302c1fce1e2"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ahub-Filter-Roller"
+    password: "0oL9kWOSUfkO"
+
+captive_portal:
+
+web_server:
+  port: 80
+
+mqtt:
+  broker: 192.168.1.11
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO2
+      mode: INPUT_PULLUP
+    name: "Filter Roller Level"
+    on_press:
+      - switch.turn_on: filter_roller_motor
+      - mqtt.publish:
+          topic: ahub/sump/filter_roller_level/out
+          payload: "1"
+    on_release:
+      - switch.turn_off: filter_roller_motor
+      - mqtt.publish:
+          topic: ahub/sump/filter_roller_level/out
+          payload: "0"
+
+switch:
+  - platform: gpio
+    name: "Filter Roller Motor MOSFET"
+    pin: GPIO0
+    id: filter_roller_motor
+
+interval:
+  - interval: 300s
+    then:
+      - mqtt.publish:
+          topic: ahub/sump/filter_roller_level/out
+          payload: !lambda |-
+            return id(filter_roller_motor).state ? "1" : "0";
