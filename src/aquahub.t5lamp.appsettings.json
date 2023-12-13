@@ -6,7 +6,7 @@
   "T5CORAL_TOPIC_IN": "ahub/light/t5coral/in",
   "T5BLUE_TOPIC_OUT": "ahub/light/t5blue/out",
   "T5CORAL_TOPIC_OUT": "ahub/light/t5coral/out",
-  "T5BLUE_HA_TOPIC": "ahub/light/t5blue/ha_cmd",
+  "T5BLUE_HA_TOPIC": "ahub/light/t5blue/ha_cmd",                     
   "T5CORAL_HA_TOPIC": "ahub/light/t5coral/ha_cmd",
   "T5LAMP_UPDATE_INTERVAL": 300,
   "DHT_GPIO_PIN": 4,
