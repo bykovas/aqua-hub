@@ -43,7 +43,7 @@ class T5LampController:
                     #print("ROW 43")
                     self.handle_ha_command(message, userdata)
                     self.last_command_time = time.time()
-                else:
+                #else:
                     #print(f"Topic '{message.topic}' not handled")                    
             except ValueError:
                 self.log_message(f"Error: Invalid value received in topic {message.topic}")
@@ -170,7 +170,9 @@ class T5LampController:
     def publish_status(self, lamp, brightness):
         """Publishes the current status to the MQTT server."""
         state_topic = config[f'{lamp.upper()}_TOPIC_OUT']
-        self.client.publish(state_topic, json.dumps({"state": "ON", "brightness": brightness}), retain=True)
+        state = "ON" if brightness > 0 else "OFF"
+        self.client.publish(state_topic, json.dumps({"state": state, "brightness": brightness}), retain=True)
+
 
 # Entry point of the program
 if __name__ == '__main__':
