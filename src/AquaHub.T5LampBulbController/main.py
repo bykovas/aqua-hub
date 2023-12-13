@@ -22,7 +22,7 @@ logging.basicConfig(handlers=[TimedRotatingFileHandler(log_file_path, when="midn
 class T5LampController:
     def __init__(self):
         self.dac = DRF0971Driver()
-        self.client = mqtt.Client(userdata={'t5blue': 0, 't5coral': 0})
+        self.client = mqtt.Client(userdata={'t5blue': 0, 't5coral': 0, 't5blue_last_brightness': 50, 't5coral_last_brightness': 50})
         self.client.on_message = self.on_message
         self.last_command_time = time.time()
 
@@ -31,39 +31,49 @@ class T5LampController:
         logging.error(f"AquaHub.T5LampController - {message}")
 
     def on_message(self, client, userdata, message):
-        """Processes incoming MQTT messages."""
-        try:
-            value = int(message.payload.decode())
-            if message.topic in [config['T5BLUE_TOPIC_IN'], config['T5CORAL_TOPIC_IN']]:
-                if time.time() - self.last_command_time > 60:
-                    self.handle_regular_command(message.topic, value, userdata)
-            elif message.topic in [config['T5BLUE_HA_TOPIC'], config['T5CORAL_HA_TOPIC']]:
-                self.handle_ha_command(message.topic, value, userdata)
-                self.last_command_time = time.time()
-        except ValueError:
-            self.log_message(f"Error: Invalid value received in topic {message.topic}")
+            """Processes incoming MQTT messages."""
+            try:
+                if message.topic in [config['T5BLUE_TOPIC_IN'], config['T5CORAL_TOPIC_IN']]:
+                    value = int(message.payload.decode())
+                    if time.time() - self.last_command_time > 60:
+                        self.handle_regular_command(message.topic, value, userdata)
+                elif message.topic in [config['T5BLUE_HA_TOPIC'], config['T5CORAL_HA_TOPIC']]:
+                    self.handle_ha_command(message, userdata)
+                    self.last_command_time = time.time()
+            except ValueError:
+                self.log_message(f"Error: Invalid value received in topic {message.topic}")
+
 
     def handle_regular_command(self, topic, value, userdata):
         """Handles regular commands."""
+        print(f"Regular Command - Topic: {topic}, Value: {value}, Userdata: {userdata}")
         if topic == config['T5BLUE_TOPIC_IN']:
             self.dac.set_dac_out_voltage(value, CHANNEL_0)
             userdata['t5blue'] = value
             self.publish_status('t5blue', value)
+            print(f"Set T5BLUE to {value} (DAC Value), Userdata Updated: {userdata}")
         elif topic == config['T5CORAL_TOPIC_IN']:
             self.dac.set_dac_out_voltage(value, CHANNEL_1)
             userdata['t5coral'] = value
             self.publish_status('t5coral', value)
+            print(f"Set T5CORAL to {value} (DAC Value), Userdata Updated: {userdata}")
 
-    def handle_ha_command(self, topic, payload, userdata):
+
+    def handle_ha_command(self, message, userdata):
         """Handles commands from Home Assistant."""
+        print(f"HA Command Received - Topic: {message.topic}, Payload: {message.payload}")        
         try:
-            payload_dict = json.loads(payload)
+            payload_dict = json.loads(message.payload.decode())
+            topic = message.topic
             state = payload_dict.get("state")
             brightness = payload_dict.get("brightness")
+            print(f"Parsed Payload - State: {state}, Brightness: {brightness}")
+            
 
             if state == "ON":
                 if brightness is not None:
-                    dac_value = brightness #int((brightness / 100.0) * 4095)
+                    dac_value = brightness
+                    userdata[f'{topic}_last_brightness'] = dac_value                    
                 else:
                     dac_value = userdata.get(f'{topic}_last_brightness', 50)
             elif state == "OFF":
@@ -82,8 +92,10 @@ class T5LampController:
 
             if brightness is not None:
                 userdata[f'{topic}_last_brightness'] = dac_value
+            print(f"Finished handling HA command for topic {message.topic} with state {state} and brightness {brightness}")                
         except json.JSONDecodeError:
             self.log_message(f"Error: Invalid JSON received in topic {topic}")
+            print(f"JSON Decode Error for topic {message.topic} with payload {message.payload}")
 
 
     def run(self):
