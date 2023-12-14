@@ -1,0 +1,63 @@
+esphome:
+  name: "ahub-buzzer-sound-alarm"
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "Esphome-Web-95A8D5"
+    password: "U7ogN4vDc0zI"
+
+captive_portal:
+web_server:
+  port: 80
+
+logger:
+  baud_rate: 0
+
+api:
+  encryption:
+    key: "j+UR1uPgvAHW0tPwk/nqs4Vx0ncwefFL/JUzPt/jP5Q="
+ota:
+
+output:
+  - platform: gpio
+    pin: GPIO3
+    id: buzzer_output
+
+switch:
+  - platform: template
+    name: "Alarm Siren"
+    id: alarm_siren
+    optimistic: true
+    on_turn_on:
+      then:
+        - while:
+            condition:
+              switch.is_on: alarm_siren
+            then:
+              - output.turn_on: buzzer_output
+              - delay: 500ms
+              - output.turn_off: buzzer_output
+              - delay: 200ms
+              - output.turn_on: buzzer_output
+              - delay: 500ms
+              - output.turn_off: buzzer_output
+              - delay: 200ms
+              - output.turn_on: buzzer_output
+              - delay: 100ms
+              - output.turn_off: buzzer_output
+              - delay: 200ms
+              - output.turn_on: buzzer_output
+              - delay: 100ms
+              - output.turn_off: buzzer_output
+              - delay: 200ms
+              - output.turn_on: buzzer_output
+              - delay: 100ms
+              - output.turn_off: buzzer_output
+              - delay: 500ms
+    on_turn_off:
+      then:
+        - output.turn_off: buzzer_output

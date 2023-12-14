@@ -51,6 +51,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{85E1
 		..\.github\workflows\docker-build.yml = ..\.github\workflows\docker-build.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.ESPHome", "AquaHub.ESPHome", "{E1ED180B-D6A4-46F7-83E0-CE0C6B087B95}"
+	ProjectSection(SolutionItems) = preProject
+		AquaHub.ESPHome\ahub-ato-level.yaml = AquaHub.ESPHome\ahub-ato-level.yaml
+		AquaHub.ESPHome\ahub-buzzer-sound-alarm.yaml = AquaHub.ESPHome\ahub-buzzer-sound-alarm.yaml
+		AquaHub.ESPHome\ahub-filter-roller-water-level.yaml = AquaHub.ESPHome\ahub-filter-roller-water-level.yaml
+		AquaHub.ESPHome\ahub-power-yynmos4-4x12v.yaml = AquaHub.ESPHome\ahub-power-yynmos4-4x12v.yaml
+		AquaHub.ESPHome\ahub-sump-light.yaml = AquaHub.ESPHome\ahub-sump-light.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

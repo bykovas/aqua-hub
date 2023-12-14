@@ -1,0 +1,111 @@
+substitutions:
+  devicename: "ahub-power-yynmos4-4x12v"
+
+esphome:
+  name: $devicename
+
+esp8266:
+  board: esp01_1m
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "4y3brctaCxCakxmPftU40M2rV5legUkWIpoYImAyvMY="  
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+mqtt:
+  broker: 192.168.1.11
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+# Text sensors with general information.
+text_sensor:
+  # Expose ESPHome version as sensor.
+  - platform: version
+    name: $devicename Version
+  # Expose WiFi information as sensors.
+  - platform: wifi_info
+    ip_address:
+      name: $devicename IP
+    bssid:
+      name: $devicename BSSID
+      
+# Sensors with general information.
+sensor:
+  # Uptime sensor.
+  - platform: uptime
+    name: $devicename Uptime
+
+  # WiFi Signal sensor.
+  - platform: wifi_signal
+    name: $devicename WiFi Signal
+    update_interval: 60s
+
+ota:
+  password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Enable logging
+logger:
+  baud_rate: 0 #need this to free up UART pins
+
+captive_portal:
+
+web_server:
+  port: 80
+
+uart:
+  baud_rate: 115200 # speed to STC15L101EW
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  
+switch:
+  - platform: template
+    name: 'relay1-ato'
+    id: relay1
+    #lambda: 'return false;'
+    turn_on_action:
+      - uart.write: [0xA0, 0x01, 0x01, 0xA2]
+      - delay: 90s
+      - switch.turn_off: relay1
+    turn_off_action:
+      - uart.write: [0xA0, 0x01, 0x00, 0xA1]
+    optimistic: true
+  - platform: template
+    name: 'relay2-filter-roller-motor'
+    id: relay2
+    #lambda: 'return false;'
+    turn_on_action:
+      - uart.write: [0xA0, 0x02, 0x01, 0xA3]
+      - delay: 15s
+      - switch.turn_off: relay2
+      #- uart.write: [0xA0, 0x02, 0x00, 0xA2]
+    turn_off_action:
+      - uart.write: [0xA0, 0x02, 0x00, 0xA2]
+    optimistic: true
+  - platform: template
+    name: 'relay3-sump-fan'
+    id: relay3
+    #lambda: 'return false;'
+    turn_on_action:
+      - uart.write: [0xA0, 0x03, 0x01, 0xA4]
+    turn_off_action:
+      - uart.write: [0xA0, 0x03, 0x00, 0xA3]
+    optimistic: true
+  - platform: template
+    name: 'relay4-sump-light'
+    id: relay4
+    #lambda: 'return false;'
+    turn_on_action:
+      - uart.write: [0xA0, 0x04, 0x01, 0xA5]
+      - delay: 2h
+      - switch.turn_off: relay4
+    turn_off_action:
+      - uart.write: [0xA0, 0x04, 0x00, 0xA4]
+    optimistic: true
