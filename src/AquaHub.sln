@@ -55,8 +55,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.ESPHome", "AquaHub.
 	ProjectSection(SolutionItems) = preProject
 		AquaHub.ESPHome\ahub-ato-level.yaml = AquaHub.ESPHome\ahub-ato-level.yaml
 		AquaHub.ESPHome\ahub-buzzer-sound-alarm.yaml = AquaHub.ESPHome\ahub-buzzer-sound-alarm.yaml
+		AquaHub.ESPHome\ahub-camera.yaml = AquaHub.ESPHome\ahub-camera.yaml
 		AquaHub.ESPHome\ahub-filter-roller-water-level.yaml = AquaHub.ESPHome\ahub-filter-roller-water-level.yaml
 		AquaHub.ESPHome\ahub-power-yynmos4-4x12v.yaml = AquaHub.ESPHome\ahub-power-yynmos4-4x12v.yaml
+		AquaHub.ESPHome\ahub-sump-dht.yaml = AquaHub.ESPHome\ahub-sump-dht.yaml
 		AquaHub.ESPHome\ahub-sump-light.yaml = AquaHub.ESPHome\ahub-sump-light.yaml
 	EndProjectSection
 EndProject
