@@ -62,6 +62,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AquaHub.ESPHome", "AquaHub.
 		AquaHub.ESPHome\ahub-sump-light.yaml = AquaHub.ESPHome\ahub-sump-light.yaml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaHub.Debug", "AquaHub.Debug\AquaHub.Debug.csproj", "{D6BB653E-15CB-48A5-B6D6-B770313EBFEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaHub.MobiusController", "AquaHub.MobiusController\AquaHub.MobiusController.csproj", "{807D7FC4-B8F7-4621-99CF-43DE6B8450C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +88,14 @@ Global
 		{E3B9F68F-D9F4-4439-ABD5-7966B9BE42FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAF6CBE8-B477-437D-833C-1015D389D764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AAF6CBE8-B477-437D-833C-1015D389D764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BB653E-15CB-48A5-B6D6-B770313EBFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BB653E-15CB-48A5-B6D6-B770313EBFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BB653E-15CB-48A5-B6D6-B770313EBFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BB653E-15CB-48A5-B6D6-B770313EBFEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{807D7FC4-B8F7-4621-99CF-43DE6B8450C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{807D7FC4-B8F7-4621-99CF-43DE6B8450C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{807D7FC4-B8F7-4621-99CF-43DE6B8450C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{807D7FC4-B8F7-4621-99CF-43DE6B8450C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
