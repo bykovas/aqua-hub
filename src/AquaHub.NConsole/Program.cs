@@ -1,54 +1,113 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace AquaHub.NConsole
 {
     internal class Program
     {
+        private static IMqttClient _mqttClient;
+        private static MqttClientOptions _mqttOptions;
+        private static TelemetryClient _telemetryClient;
+
         static async Task Main(string[] args)
         {
-            var mqttClient = await ConnectMqttClientAsync();
+            // Initialize Application Insights
+            var config = TelemetryConfiguration.CreateDefault();
+            config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATION_INSIGHTS_CONNECTION_STRING");
+            _telemetryClient = new TelemetryClient(config);
 
-            //var test = new Test();
-            //test.Foo();
+            // Track custom event in Application Insights
+            _telemetryClient.TrackEvent("AquaHubNConsoleServiceRunning");
 
-            Console.WriteLine("Hello, World!");
-            while (true)
+            try
             {
-                var values = Schedule.get_current_values();
-                var message = $"{DateTime.Now.ToShortTimeString()} - Blue plus: {values[0]}, Coral plus: {values[1]}";
-                Console.WriteLine(message);
+                // Initialize the MQTT client
+                var factory = new MqttFactory();
+                _mqttClient = factory.CreateMqttClient();
 
-                // Publish to MQTT
-                var messageBuilder = new MqttApplicationMessageBuilder()
-                    .WithTopic("ahub/light/t5coral/in")
-                    .WithPayload(Encoding.UTF8.GetBytes(values[1].ToString()))
-                    .WithRetainFlag();
+                // Define MQTT connection options
+                _mqttOptions = new MqttClientOptions
+                {
+                    ClientId = "Client1",
+                    Credentials = new MqttClientCredentials("mqttu", Encoding.UTF8.GetBytes("mqttp")),
+                    ChannelOptions = new MqttClientTcpOptions
+                    {
+                        Server = "192.168.1.11"
+                    }
+                };
 
-                await mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
+                // Handler for MQTT client disconnection
+                _mqttClient.DisconnectedAsync += async e =>
+                {
+                    Console.WriteLine("Disconnected from MQTT broker. Trying to reconnect...");
+                    await Task.Delay(TimeSpan.FromSeconds(100));
+                    await ConnectMqttClientAsync();
+                };
 
-                messageBuilder.WithTopic("ahub/light/t5blue/in")
-                    .WithPayload(Encoding.UTF8.GetBytes(values[0].ToString()));
+                // Handler for MQTT client connection
+                _mqttClient.ConnectedAsync += async e =>
+                {
+                    Console.WriteLine("Connected to MQTT broker.");
+                    // You can add topic subscriptions or other logic here upon connection
+                };
 
-                await mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
+                // Attempt to connect to the MQTT broker
+                await ConnectMqttClientAsync();
 
-                Thread.Sleep(10000);
+                // Main loop
+                while (true)
+                {
+                    var values = Schedule.get_current_values();
+                    var message =
+                        $"{DateTime.Now.ToShortTimeString()} - Blue plus: {values[0]}, Coral plus: {values[1]}";
+                    Console.WriteLine(message);
+
+                    // Publish to MQTT
+                    var messageBuilder = new MqttApplicationMessageBuilder()
+                        .WithTopic("ahub/light/t5coral/in")
+                        .WithPayload(Encoding.UTF8.GetBytes(values[1].ToString()))
+                        .WithRetainFlag();
+
+                    await _mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
+
+                    messageBuilder.WithTopic("ahub/light/t5blue/in")
+                        .WithPayload(Encoding.UTF8.GetBytes(values[0].ToString()));
+
+                    await _mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
+
+                    Thread.Sleep(10000); // Delay between iterations
+                }
+            }
+            catch (Exception ex)
+            {
+                _telemetryClient.TrackException(ex);
+            }
+            finally
+            {
+                _telemetryClient.Flush();
+                Task.Delay(5000).Wait();  // Give time for flushing
             }
         }
 
-        private static async Task<IMqttClient> ConnectMqttClientAsync()
+        // Method to connect to the MQTT broker
+        private static async Task ConnectMqttClientAsync()
         {
-            var factory = new MqttFactory();
-            var mqttClient = factory.CreateMqttClient();
-
-            var options = new MqttClientOptionsBuilder()
-                .WithCredentials("mqttu", "mqttp")
-                .WithTcpServer("192.168.1.11")
-                .Build();
-
-            await mqttClient.ConnectAsync(options, CancellationToken.None);
-            return mqttClient;
+            try
+            {
+                await _mqttClient.ConnectAsync(_mqttOptions, CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Connection failed: {ex.Message}");
+                // Wait before retrying to connect
+                await Task.Delay(TimeSpan.FromSeconds(100));
+                await ConnectMqttClientAsync();
+            }
         }
     }
 }

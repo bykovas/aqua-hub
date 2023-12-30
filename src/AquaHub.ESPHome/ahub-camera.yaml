@@ -1,0 +1,72 @@
+substitutions:
+  devicename: "ahub-camera"
+  apikey: "ZESYWpygvH/b32e9yRxKNkAtfUZKyXg8eUJH6T+GOao="
+  otapwd: "8915154937707ad7ce5f7cb2a82131a2"
+  appwd: "01234567"
+
+esphome:
+  name: $devicename
+  friendly_name: $devicename
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+api:
+  encryption:
+    key: $apikey
+
+ota:
+  password: $otapwd
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: $devicename
+    password: $appwd
+
+captive_portal:
+
+web_server:
+  port: 80
+
+text_sensor:
+  - platform: version
+    name: $devicename Version
+  - platform: wifi_info
+    ip_address:
+      name: $devicename IP
+    bssid:
+      name: $devicename BSSID
+
+sensor:
+  - platform: uptime
+    name: $devicename Uptime
+  - platform: wifi_signal
+    name: $devicename WiFi Signal
+    update_interval: 60s 
+
+esp32_camera:
+  name: $devicename
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 1024x768
+  jpeg_quality: 10
+
+esp32_camera_web_server:
+  - port: 8080
+    mode: stream
+  - port: 8081
+    mode: snapshot
