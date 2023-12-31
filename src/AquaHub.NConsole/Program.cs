@@ -1,8 +1,8 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
+//using Microsoft.ApplicationInsights;
+//using Microsoft.ApplicationInsights.Extensibility;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -12,17 +12,17 @@ namespace AquaHub.NConsole
     {
         private static IMqttClient _mqttClient;
         private static MqttClientOptions _mqttOptions;
-        private static TelemetryClient _telemetryClient;
+        //private static TelemetryClient _telemetryClient;
 
         static async Task Main(string[] args)
         {
             // Initialize Application Insights
-            var config = TelemetryConfiguration.CreateDefault();
-            config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATION_INSIGHTS_CONNECTION_STRING");
-            _telemetryClient = new TelemetryClient(config);
+            //var config = TelemetryConfiguration.CreateDefault();
+            //config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATION_INSIGHTS_CONNECTION_STRING");
+            //_telemetryClient = new TelemetryClient(config);
 
             // Track custom event in Application Insights
-            _telemetryClient.TrackEvent("AquaHubNConsoleServiceRunning");
+            //_telemetryClient.TrackEvent("AquaHubNConsoleServiceRunning");
 
             try
             {
@@ -85,11 +85,11 @@ namespace AquaHub.NConsole
             }
             catch (Exception ex)
             {
-                _telemetryClient.TrackException(ex);
+                //_telemetryClient.TrackException(ex);
             }
             finally
             {
-                _telemetryClient.Flush();
+                //_telemetryClient.Flush();
                 Task.Delay(5000).Wait();  // Give time for flushing
             }
         }
