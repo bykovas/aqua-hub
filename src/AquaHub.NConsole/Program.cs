@@ -1,8 +1,8 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
+//using Microsoft.ApplicationInsights;
+//using Microsoft.ApplicationInsights.Extensibility;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -17,8 +17,8 @@ namespace AquaHub.NConsole
         static async Task Main(string[] args)
         {
             // Initialize Application Insights
-            var config = TelemetryConfiguration.CreateDefault();
-            config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATION_INSIGHTS_CONNECTION_STRING");
+            //var config = TelemetryConfiguration.CreateDefault();
+            //config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATION_INSIGHTS_CONNECTION_STRING");
             //_telemetryClient = new TelemetryClient(config);
 
             // Track custom event in Application Insights
