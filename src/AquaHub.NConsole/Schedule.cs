@@ -25,7 +25,7 @@ namespace AquaHub.NConsole
             _currentSchedule = LoadSchedule("ReefMoreBlue");
         }
 
-        public static int[] get_current_values()
+        public static Dictionary<string, int> get_current_values()
         {
             return CalculateCurrentValues(_currentSchedule);
         }
@@ -39,7 +39,7 @@ namespace AquaHub.NConsole
             return schedules[scheduleName];
         }
 
-        private static int[] CalculateCurrentValues(IReadOnlyList<ScheduleEntry> schedule)
+        private static Dictionary<string, int> CalculateCurrentValues(IReadOnlyList<ScheduleEntry> schedule)
         {
             var now = DateTime.Now.TimeOfDay;
             int? currentBluePlus = null;
@@ -64,7 +64,15 @@ namespace AquaHub.NConsole
                 }
             }
 
-            return new int[] { currentBluePlus ?? 0, currentCoralPlus ?? 0, currentPhotoRed ?? 0 };
+            var sched = new Dictionary<string, int>
+            {
+                { "BluePlus", currentBluePlus ?? 0 },
+                { "CoralPlus", currentCoralPlus ?? 0 },
+                { "PhotoRed", currentPhotoRed ?? 0 }
+            };
+
+            //return new int[] { currentBluePlus ?? 0, currentCoralPlus ?? 0, currentPhotoRed ?? 0 };
+            return sched;
         }
 
         private static double Interpolate(int? startValue, int? endValue, TimeSpan startTime, TimeSpan endTime, TimeSpan currentTime)

@@ -66,23 +66,28 @@ namespace AquaHub.NConsole
                 {
                     var values = Schedule.get_current_values();
                     var message =
-                        $"{DateTime.Now.ToShortTimeString()} - Blue plus: {values[0]}, Coral plus: {values[1]}";
+                        $"{DateTime.Now.ToShortTimeString()} - Blue plus: {values["BluePlus"]}, Coral plus: {values["CoralPlus"]}, PhotoRed: {values["PhotoRed"]}";
                     Console.WriteLine(message);
 
                     // Publish to MQTT
                     var messageBuilder = new MqttApplicationMessageBuilder()
                         .WithTopic("ahub/light/t5coral/in")
-                        .WithPayload(Encoding.UTF8.GetBytes(values[1].ToString()))
+                        .WithPayload(Encoding.UTF8.GetBytes(values["CoralPlus"].ToString()))
                         .WithRetainFlag();
 
                     await _mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
 
                     messageBuilder.WithTopic("ahub/light/t5blue/in")
-                        .WithPayload(Encoding.UTF8.GetBytes(values[0].ToString()));
+                        .WithPayload(Encoding.UTF8.GetBytes(values["BluePlus"].ToString()));
 
                     await _mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
 
-                    Thread.Sleep(10000); // Delay between iterations
+                    messageBuilder.WithTopic("ahub/light/photored/in")
+                        .WithPayload(Encoding.UTF8.GetBytes(values["PhotoRed"].ToString()));
+
+                    await _mqttClient.PublishAsync(messageBuilder.Build(), CancellationToken.None);
+
+                    Thread.Sleep(1000 * 60 * 2); // Delay between iterations
                 }
             }
             catch (Exception ex)
