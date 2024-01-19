@@ -26,6 +26,8 @@ namespace AquaHub.NConsole
 
             try
             {
+                var moo = Schedule.get_current_values();
+
                 // Initialize the MQTT client
                 var factory = new MqttFactory();
                 _mqttClient = factory.CreateMqttClient();

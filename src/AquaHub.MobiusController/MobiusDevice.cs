@@ -20,25 +20,25 @@ namespace AquaHub.MobiusController
         public async Task ScanAndConnectAsync()
         {
             _logger.LogInformation("Scanning for Bluetooth devices...");
-            BluetoothDeviceInfo[] devices = bluetoothClient.DiscoverDevicesInRange();
+            //BluetoothDeviceInfo[] devices = bluetoothClient.DiscoverDevicesInRange();
 
-            foreach (BluetoothDeviceInfo device in devices)
-            {
-                _logger.LogInformation($"Found Device: {device.DeviceName}, Address: {device.DeviceAddress}");
-                if (device.DeviceName == "YourMobiusDeviceName") // Replace with your device's name
-                {
-                    _logger.LogInformation($"Connecting to {device.DeviceName}...");
-                    await ConnectToDeviceAsync(device);
-                    break;
-                }
-            }
+            //foreach (BluetoothDeviceInfo device in devices)
+            //{
+            //    _logger.LogInformation($"Found Device: {device.DeviceName}, Address: {device.DeviceAddress}");
+            //    if (device.DeviceName == "YourMobiusDeviceName") // Replace with your device's name
+            //    {
+            //        _logger.LogInformation($"Connecting to {device.DeviceName}...");
+            //        await ConnectToDeviceAsync(device);
+            //        break;
+            //    }
+            //}
         }
 
         private async Task ConnectToDeviceAsync(BluetoothDeviceInfo device)
         {
             try
             {
-                bluetoothClient.BeginConnect(device.DeviceAddress, BluetoothService.SerialPort, ConnectCallback, device);
+                //bluetoothClient.BeginConnect(device.DeviceAddress, BluetoothService.SerialPort, ConnectCallback, device);
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace AquaHub.MobiusController
         {
             try
             {
-                bluetoothClient.EndConnect(result);
+                //bluetoothClient.EndConnect(result);
                 _logger.LogInformation("Connected to device.");
 
                 // Here you can interact with the device, e.g., read/write data

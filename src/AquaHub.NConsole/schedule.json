@@ -1,6 +1,18 @@
 {
   "ReefMoreBlue": [
     {
+      "t": "8:00",
+      "PhotoRed": 0
+    },
+    {
+      "t": "10:00",
+      "PhotoRed": 100
+    },
+    {
+      "t": "12:00",
+      "PhotoRed": 0
+    },
+    {
       "t": "9:00",
       "BluePlus": 0
     },

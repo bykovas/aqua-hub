@@ -44,6 +44,7 @@ namespace AquaHub.NConsole
             var now = DateTime.Now.TimeOfDay;
             int? currentBluePlus = null;
             int? currentCoralPlus = null;
+            int? currentPhotoRed = null;
 
             for (var i = 0; i < schedule.Count - 1; i++)
             {
@@ -57,10 +58,13 @@ namespace AquaHub.NConsole
 
                     if (schedule[i].CoralPlus.HasValue || schedule[i + 1].CoralPlus.HasValue)
                         currentCoralPlus = (int)Interpolate(schedule[i].CoralPlus, schedule[i + 1].CoralPlus, start, end, now);
+
+                    if (schedule[i].PhotoRed.HasValue || schedule[i + 1].PhotoRed.HasValue)
+                        currentPhotoRed = (int)Interpolate(schedule[i].PhotoRed, schedule[i + 1].PhotoRed, start, end, now);
                 }
             }
 
-            return new int[] { currentBluePlus ?? 0, currentCoralPlus ?? 0 };
+            return new int[] { currentBluePlus ?? 0, currentCoralPlus ?? 0, currentPhotoRed ?? 0 };
         }
 
         private static double Interpolate(int? startValue, int? endValue, TimeSpan startTime, TimeSpan endTime, TimeSpan currentTime)
@@ -91,6 +95,8 @@ namespace AquaHub.NConsole
         public int? CoralPlus { get; set; }
 
         public int? BluePlus { get; set; }
+
+        public int? PhotoRed { get; set; }
 
         [JsonIgnore]
         public TimeSpan ParsedTime { get; set; }
